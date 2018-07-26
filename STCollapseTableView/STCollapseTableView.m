@@ -75,6 +75,7 @@
 - (void)setupCollapseTableView
 {
     self.exclusiveSections = YES;
+    self.keepOneSection = NO;
     self.shouldHandleHeadersTap = YES;
     self.sectionsStates = [[NSMutableArray alloc] init];
 }
@@ -135,11 +136,7 @@
     {
         return;
     }
-
-    if ([self.headerViewTapDelegate respondsToSelector:@selector(collapseTableView:didOpenSection:)]) {
-        [self.headerViewTapDelegate collapseTableView:self didOpenSection:sectionIndex];
-    }
-
+    
     if (self.exclusiveSections)
     {
         NSUInteger openedSection = [self openedSection];
@@ -190,11 +187,31 @@
             [self reloadData];
         }
     }
+    
+    if ([self.headerViewTapDelegate respondsToSelector:@selector(collapseTableView:didOpenSection:)]) {
+        [self.headerViewTapDelegate collapseTableView:self didOpenSection:sectionIndex];
+    }
 }
 
 - (void)closeSection:(NSUInteger)sectionIndex animated:(BOOL)animated
 {
+    if (self.keepOneSection)
+    {
+        BOOL found = NO;
+        for (NSUInteger index = 0 ; index < [self.sectionsStates count] ; index++)
+        {
+            if ([[self.sectionsStates objectAtIndex:index] boolValue] && index != sectionIndex)
+            {
+                found = YES;
+            }
+        }
+        if(!found) {
+            return;
+        }
+    }
+    
     [self setSectionAtIndex:sectionIndex open:NO];
+    
     if ([self.headerViewTapDelegate respondsToSelector:@selector(collapseTableView:didCloseSection:)]) {
         [self.headerViewTapDelegate collapseTableView:self didCloseSection:sectionIndex];
     }
@@ -259,6 +276,26 @@
                     [self closeSection:index animated:YES];
                 }
             }
+        }
+    }
+}
+
+- (void)setKeepOneSection:(BOOL)keepOneSection
+{
+    _keepOneSection = keepOneSection;
+    
+    if (self.keepOneSection)
+    {
+        BOOL found = NO;
+        for (NSUInteger index = 0 ; index < [self.sectionsStates count] ; index++)
+        {
+            if ([[self.sectionsStates objectAtIndex:index] boolValue])
+            {
+                found = YES;
+            }
+        }
+        if(!found) {
+            [self openSection:0 animated:YES];
         }
     }
 }
@@ -382,13 +419,21 @@
     [self.sectionsStates replaceObjectAtIndex:sectionIndex withObject:@(open)];
 }
 
+- (BOOL)hasOpenedSection
+{
+    for (NSUInteger index = 0 ; index < [self.sectionsStates count] ; index++)
+    {
+        if ([[self.sectionsStates objectAtIndex:index] boolValue])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 - (NSUInteger)openedSection
 {
-    if (!self.exclusiveSections)
-    {
-        return NSNotFound;
-    }
-
     for (NSUInteger index = 0 ; index < [self.sectionsStates count] ; index++)
     {
         if ([[self.sectionsStates objectAtIndex:index] boolValue])

@@ -56,7 +56,12 @@
 @property (nonatomic, assign) BOOL exclusiveSections;
 
 /**
- *	This property allows STCollapseTableView to automatically handle tap on headers in order to collapse or expand sections.
+ *    This property allow to enable/disable to keep always one section open.
+ *  If YES, one section is always open.
+ *  Default value is NO.
+ */
+@property (nonatomic, assign) BOOL keepOneSection;
+
  *  If NO, you'll have to manually call the open or close methods if you want any content to be displayed.
  *  Default value is YES.
  */
@@ -95,6 +100,20 @@
  *	@return	YES if the section is open.
  */
 - (BOOL)isOpenSection:(NSUInteger)sectionIndex;
+
+/**
+ *    This methods will return YES if a section is open.
+ *
+ *    @return    YES if a section is open.
+ */
+- (BOOL)hasOpenedSection;
+
+/**
+ *    This methods will return index of the first section which is open.
+ *
+ *    @return    index of the first open section.
+ */
+- (NSUInteger)openedSection;
 
 @property (nonatomic, weak) id<STCollapseTableViewDelegate> headerViewTapDelegate;
 

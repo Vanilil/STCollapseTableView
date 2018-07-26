@@ -62,6 +62,7 @@
  */
 @property (nonatomic, assign) BOOL keepOneSection;
 
+/*
  *  If NO, you'll have to manually call the open or close methods if you want any content to be displayed.
  *  Default value is YES.
  */

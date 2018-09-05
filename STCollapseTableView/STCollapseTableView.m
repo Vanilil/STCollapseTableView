@@ -212,10 +212,6 @@
     
     [self setSectionAtIndex:sectionIndex open:NO];
     
-    if ([self.headerViewTapDelegate respondsToSelector:@selector(collapseTableView:didCloseSection:)]) {
-        [self.headerViewTapDelegate collapseTableView:self didCloseSection:sectionIndex];
-    }
-
     if (animated)
     {
         NSArray* indexPathsToDelete = [self indexPathsForRowsInSectionAtIndex:sectionIndex];
@@ -224,6 +220,10 @@
     else
     {
         [self reloadData];
+    }
+    
+    if ([self.headerViewTapDelegate respondsToSelector:@selector(collapseTableView:didCloseSection:)]) {
+        [self.headerViewTapDelegate collapseTableView:self didCloseSection:sectionIndex];
     }
 }
 

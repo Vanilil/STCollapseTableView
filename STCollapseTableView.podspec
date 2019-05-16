@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "STCollapseTableView"
-  s.version = "0.1.4"
+  s.version = "0.1.5"
   s.summary = "A UITableView subclass that automatically collapse and/or expand your sections."
   s.description = <<-DESC
   A UITableView subclass that automatically collapse and/or expand your sections.

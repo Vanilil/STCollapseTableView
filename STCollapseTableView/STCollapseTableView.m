@@ -36,7 +36,6 @@
 
 @property (nonatomic, weak) id<UITableViewDataSource> collapseDataSource;
 @property (nonatomic, weak) id<UITableViewDelegate> collapseDelegate;
-@property (nonatomic, strong) NSMutableArray *sectionsStates;
 
 @end
 

@@ -70,6 +70,11 @@
  */
 @property (nonatomic, assign) BOOL shouldHandleHeadersTap;
 
+/*
+*  Set default states for sections
+*/
+@property (nonatomic, strong) NSMutableArray *sectionsStates;
+
 /**
  *	This method will display the section whose index is in parameters
  *  If exclusiveSections boolean is YES, this method will close any open section.
